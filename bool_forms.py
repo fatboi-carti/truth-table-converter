@@ -4,9 +4,9 @@ def sub(number):
     return "".join(sub_digits[digit] for digit in str(number))
 
 def pdnf(v_set, v_cnt):
-    b_set = f"{v_set:04b}"
+    b_set = f"{v_set:0{v_cnt}b}"
     pdnf_elem = ""
-    for n in range(v_cnt+1):
+    for n in range(v_cnt):
         if b_set[n] == '0':
             pdnf_elem += f"x\u0304{sub(n)}"
         else:
@@ -18,7 +18,7 @@ isValid_count = False
 
 while isValid_count == False:
     try:
-        varCount = int(input("Введите количество переменных: "))
+        var_count = int(input("Введите количество переменных: "))
         isValid_count = True
     except (TypeError, ValueError):
         print("Неправильный ввод.\n")
@@ -27,9 +27,9 @@ while isValid_count == False:
 isValid_func = False
 
 while isValid_func == False:
-    print(f"Введите двоичное значение функции по таблице истинности. {2**varCount} элементов (0,1)\n")
+    print(f"Введите двоичное значение функции по таблице истинности. {2**var_count} элементов (0,1)\n")
 
-    func = input()[:(2**varCount)]
+    func = input()[:(2**var_count)]
 
     funcElems = set(func)
     sideElems = [x for x in funcElems if x not in "01"]
@@ -37,22 +37,22 @@ while isValid_func == False:
     if len(sideElems) > 0:
         print("Введены недопустимые знаки.\n")
 
-    elif len(func) < 2**varCount:
+    elif len(func) < 2**var_count:
         print("Меньше символов, чем нужно\n")
 
     else:
         isValid_func = True
-        print(f"Введённая функция:\n{func[:(2**varCount)]}\n")
+        print(f"Введённая функция:\n{func[:(2**var_count)]}\n")
 
 
 result = ""
 
-for i in range(0,2**varCount):
+for i in range(0, 2**var_count):
     if func[i] == '1':
         if result == "":
-            result += f"{pdnf(i,varCount)}"
+            result += f"{pdnf(i, var_count)}"
         else:
-            result += f" ∨ {pdnf(i,varCount)}"
+            result += f" ∨ {pdnf(i, var_count)}"
 
 
 print(f"СДНФ: {result}")
