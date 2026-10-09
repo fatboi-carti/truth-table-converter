@@ -13,6 +13,22 @@ def pdnf(v_set, v_cnt):
             pdnf_elem += f"x{sub(n)}"
     return pdnf_elem
 
+def pcnf(v_set, v_cnt):
+    b_set = f"{v_set:0{v_cnt}b}"
+    pcnf_elem = ""
+    for n in range(v_cnt):
+        if b_set[n] == '1':
+            if n == 0:
+                pcnf_elem += f"x\u0304{sub(n)}"
+            else:
+                pcnf_elem += f"∨x{sub(n)}"
+        else:
+            if n == 0:
+                pcnf_elem += f"x{sub(n)}"
+            else:
+                pcnf_elem += f"∨x{sub(n)}"
+    return pcnf_elem
+
 
 isValid_count = False
 
@@ -45,14 +61,26 @@ while isValid_func == False:
         print(f"Введённая функция:\n{func[:(2**var_count)]}\n")
 
 
-result = ""
+resultD = ""
 
 for i in range(0, 2**var_count):
     if func[i] == '1':
-        if result == "":
-            result += f"{pdnf(i, var_count)}"
+        if resultD == "":
+            resultD += f"{pdnf(i, var_count)}"
         else:
-            result += f" ∨ {pdnf(i, var_count)}"
+            resultD += f" ∨ {pdnf(i, var_count)}"
+
+resultC = ""
+
+for i in range(0, 2**var_count):
+    
+    if func[i] == '0':
+        resultC += '('
+        resultC += f"{pcnf(i, var_count)}"
+        resultC += ')'
+        
+
+print(f"СДНФ: {resultD}\n")
+print(f"СКНФ: {resultC}\n")
 
 
-print(f"СДНФ: {result}")
