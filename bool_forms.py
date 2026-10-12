@@ -29,6 +29,17 @@ def pcnf(v_set, v_cnt):
                 pcnf_elem += f"∨x{sub(n)}"
     return pcnf_elem
 
+def pj(v_set, v_cnt, coef):
+    b_set = f"{v_set:0{v_cnt}b}"
+    pj_elem = ""
+    if v_set == 0:
+        pj_elem += '1'*coef[0]
+        return pj_elem
+    for n in range(v_cnt):
+        if b_set[n] == '1':
+            pj_elem += f"x{sub(n)}"
+    return pj_elem
+
 
 isValid_count = False
 
@@ -79,8 +90,28 @@ for i in range(0, 2**var_count):
         resultC += f"{pcnf(i, var_count)}"
         resultC += ')'
         
+resultP = ""
+funcPJ = [int(x) for x in func]
+coefficients = [funcPJ[0]]
+
+n = len(funcPJ)
+for i in range(n - 1):
+    for j in range(n - 1, i, -1):
+        funcPJ[j] = funcPJ[j] ^ funcPJ[j - 1]
+    coefficients.append(funcPJ[i + 1])
+
+for i in range(0, 2**var_count):
+    if coefficients[i] == 1:
+        if resultP == "":
+            resultP += f"{pj(i, var_count, coefficients)}"
+        else:
+            resultP += f" ⊕ {pj(i, var_count, coefficients)}"
+
 
 print(f"СДНФ: {resultD}\n")
 print(f"СКНФ: {resultC}\n")
+print(f"Полином Жегалкина: {resultP}\n")
+print(coefficients)
+input()
 
 
