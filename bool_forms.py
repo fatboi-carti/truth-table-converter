@@ -1,4 +1,3 @@
-
 class App:
 
     def __init__(self):
@@ -13,8 +12,12 @@ class App:
         self.loop()
 
     def loop(self):
-        pass
-    
+        while True:
+            answer = input("Запустить заного? (Y/N)")[0]
+            if answer in "nN":
+                break
+            else:
+                self.start()
     def input_data(self):
         print("Ввод данных...\n")
         def get_var_count():
